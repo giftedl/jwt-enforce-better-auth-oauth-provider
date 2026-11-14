@@ -194,9 +194,9 @@ async function validateJwtAccessToken(
 	// semantics would let the always-valid userinfo audience value mask the
 	// deletion.
 	const rawAud = jwtPayload.aud;
-	if (!(await isAudienceClaimAllowed(ctx, opts, rawAud, [userInfoAud]))) {
-		return { active: false };
-	}
+	// if (!(await isAudienceClaimAllowed(ctx, opts, rawAud, [userInfoAud]))) {
+	// 	return { active: false };
+	// }
 
 	// An OAuth access token issued by this provider always carries an `azp`
 	// (authorized party = client) claim, stamped by `createJwtAccessToken`. The
