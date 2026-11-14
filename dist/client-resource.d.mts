@@ -1,4 +1,4 @@
-import { c as ResourceServerMetadata } from "./oauth-tw0Gr5R5.mjs";
+import { c as ResourceServerMetadata } from "./oauth-GVSFxpjR.mjs";
 import { JWTPayload, JWTVerifyOptions } from "jose";
 import { ResourceRequestInput, VerifyAccessTokenRequestOptions } from "better-auth/oauth2";
 import { BetterAuthOptions } from "better-auth/types";
@@ -10,7 +10,7 @@ type ResourceClientAuth = {
 };
 export declare const oauthProviderResourceClient: <T extends ResourceClientAuth | undefined = undefined>(auth?: T) => {
   id: "oauth-provider-resource-client";
-  version: any;
+  version: string;
   getActions(): {
     /**
      * Performs verification of an access token for your APIs. Can perform

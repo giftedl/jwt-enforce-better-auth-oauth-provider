@@ -1,84 +1,9 @@
-import { B as Prompt, E as OAuthConsent, F as OAuthResource, H as Scope, O as OAuthExtensionGrantHandlerInput, R as OAuthTokenResponse, a as GrantType, j as OAuthOptions, k as OAuthMetadataExtensionInput, l as TokenEndpointAuthMethod, n as AuthServerMetadata, o as OAuthClient, u as TokenType, w as OAuthClientRegistrationResponse, y as OAuthClientAdministrativeResponse } from "./oauth-tw0Gr5R5.mjs";
-import { t as ClientJwks } from "./client-jwks-zt-C6luo.mjs";
+import { B as Prompt, E as OAuthConsent, F as OAuthResource, H as Scope, O as OAuthExtensionGrantHandlerInput, R as OAuthTokenResponse, a as GrantType, j as OAuthOptions, k as OAuthMetadataExtensionInput, l as TokenEndpointAuthMethod, n as AuthServerMetadata, o as OAuthClient, u as TokenType, w as OAuthClientRegistrationResponse, y as OAuthClientAdministrativeResponse } from "./oauth-GVSFxpjR.mjs";
+import { t as ClientJwks } from "./client-jwks-DbPSP8uQ.mjs";
 import "better-call";
 import * as z from "zod";
 import { DeviceAuthorizationGrant, DeviceAuthorizationPluginOptions } from "better-auth/plugins/device-authorization";
 import { AuthContext, GenericEndpointContext } from "@better-auth/core";
-/** The Standard Typed interface. This is a base type extended by other specs. */
-interface StandardTypedV1<Input = unknown, Output = Input> {
-  /** The Standard properties. */
-  readonly "~standard": StandardTypedV1.Props<Input, Output>;
-}
-declare namespace StandardTypedV1 {
-  /** The Standard Typed properties interface. */
-  interface Props<Input = unknown, Output = Input> {
-    /** The version number of the standard. */
-    readonly version: 1;
-    /** The vendor name of the schema library. */
-    readonly vendor: string;
-    /** Inferred types associated with the schema. */
-    readonly types?: Types<Input, Output> | undefined;
-  }
-  /** The Standard Typed types interface. */
-  interface Types<Input = unknown, Output = Input> {
-    /** The input type of the schema. */
-    readonly input: Input;
-    /** The output type of the schema. */
-    readonly output: Output;
-  }
-  /** Infers the input type of a Standard Typed. */
-  type InferInput<Schema extends StandardTypedV1> = NonNullable<Schema["~standard"]["types"]>["input"];
-  /** Infers the output type of a Standard Typed. */
-  type InferOutput<Schema extends StandardTypedV1> = NonNullable<Schema["~standard"]["types"]>["output"];
-}
-/** The Standard Schema interface. */
-interface StandardSchemaV1<Input = unknown, Output = Input> {
-  /** The Standard Schema properties. */
-  readonly "~standard": StandardSchemaV1.Props<Input, Output>;
-}
-declare namespace StandardSchemaV1 {
-  /** The Standard Schema properties interface. */
-  interface Props<Input = unknown, Output = Input> extends StandardTypedV1.Props<Input, Output> {
-    /** Validates unknown input values. */
-    readonly validate: (value: unknown, options?: StandardSchemaV1.Options | undefined) => Result<Output> | Promise<Result<Output>>;
-  }
-  /** The result interface of the validate function. */
-  type Result<Output> = SuccessResult<Output> | FailureResult;
-  /** The result interface if validation succeeds. */
-  interface SuccessResult<Output> {
-    /** The typed output value. */
-    readonly value: Output;
-    /** A falsy value for `issues` indicates success. */
-    readonly issues?: undefined;
-  }
-  interface Options {
-    /** Explicit support for additional vendor-specific parameters, if needed. */
-    readonly libraryOptions?: Record<string, unknown> | undefined;
-  }
-  /** The result interface if validation fails. */
-  interface FailureResult {
-    /** The issues of failed validation. */
-    readonly issues: ReadonlyArray<Issue>;
-  }
-  /** The issue interface of the failure output. */
-  interface Issue {
-    /** The error message of the issue. */
-    readonly message: string;
-    /** The path of the issue, if any. */
-    readonly path?: ReadonlyArray<PropertyKey | PathSegment> | undefined;
-  }
-  /** The path segment interface of the issue. */
-  interface PathSegment {
-    /** The key representing a path segment. */
-    readonly key: PropertyKey;
-  }
-  /** The Standard types interface. */
-  interface Types<Input = unknown, Output = Input> extends StandardTypedV1.Types<Input, Output> {}
-  /** Infers the input type of a Standard. */
-  type InferInput<Schema extends StandardTypedV1> = StandardTypedV1.InferInput<Schema>;
-  /** Infers the output type of a Standard. */
-  type InferOutput<Schema extends StandardTypedV1> = StandardTypedV1.InferOutput<Schema>;
-}
 /**
  * RFC 8628 device authorization grant type. A registered OAuth client polls the
  * token endpoint with this `grant_type` to exchange an approved device code for
@@ -133,7 +58,7 @@ declare function buildOAuthDeviceGrant(): {
       };
     };
   };
-  onRequestValidationError: (issues: readonly StandardSchemaV1.Issue[]) => void;
+  onRequestValidationError: (issues: readonly import("better-auth").StandardSchemaV1.Issue[]) => void;
   deviceCodeSchemaFields: {
     resources: {
       type: "string[]";
@@ -151,27 +76,27 @@ declare function buildOAuthDeviceGrant(): {
     device_authorization_endpoint: string;
   };
   authorizeRequest: ({ ctx, request }: {
-    ctx: import("@better-auth/core").GenericEndpointContext;
-    request: import("better-auth/plugins/device-authorization").DeviceAuthorizationRequest & {
-      client_secret?: string;
-      client_assertion?: string;
-      client_assertion_type?: string;
-      resource?: string | string[];
+    ctx: import("better-auth").GenericEndpointContext;
+    request: import("better-auth/plugins").DeviceAuthorizationRequest & {
+      client_secret?: string | undefined;
+      client_assertion?: string | undefined;
+      client_assertion_type?: string | undefined;
+      resource?: string | string[] | undefined;
     };
   }) => Promise<{
     clientId: string;
     deviceCodeFields: {
       oauthClientId: string;
-      resources: string[];
+      resources: string[] | null;
     };
-  }>;
+  } | undefined>;
   assertSessionRedemption: ({ deviceCode }: {
-    ctx: import("@better-auth/core").GenericEndpointContext;
+    ctx: import("better-auth").GenericEndpointContext;
     deviceCode: Record<string, unknown>;
   }) => void;
   getVerificationContext: (deviceCode: Record<string, unknown>) => {
-    resource: string | string[];
-  };
+    resource: string | string[] | undefined;
+  } | undefined;
   verificationOpenAPIProperties: {
     resource: {
       oneOf: ({
@@ -271,7 +196,7 @@ declare function oauthDeviceAuthorization(options?: OAuthDeviceAuthorizationOpti
         client_assertion: z.ZodOptional<z.ZodString>;
         client_assertion_type: z.ZodOptional<z.ZodString>;
         resource: z.ZodOptional<z.ZodUnion<readonly [z.ZodString, z.ZodArray<z.ZodString>, z.ZodLiteral<"">]>>;
-      }, z.z.core.$strip> | z.ZodObject<{
+      }, z.core.$strip> | z.ZodObject<{
         user_id: z.ZodOptional<z.ZodString>;
         scope: z.ZodOptional<z.ZodString>;
         client_id: z.ZodOptional<z.ZodString>;
@@ -279,7 +204,7 @@ declare function oauthDeviceAuthorization(options?: OAuthDeviceAuthorizationOpti
         client_assertion: z.ZodOptional<z.ZodString>;
         client_assertion_type: z.ZodOptional<z.ZodString>;
         resource: z.ZodOptional<z.ZodUnion<readonly [z.ZodString, z.ZodArray<z.ZodString>, z.ZodLiteral<"">]>>;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       error: z.ZodObject<{
         error: z.ZodEnum<{
           invalid_request: "invalid_request";
@@ -290,7 +215,7 @@ declare function oauthDeviceAuthorization(options?: OAuthDeviceAuthorizationOpti
           invalid_target: "invalid_target";
         }>;
         error_description: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       onValidationError: ({ issues, message }: {
         message: string;
         issues: readonly import("better-call").StandardSchemaV1.Issue[];
@@ -394,7 +319,7 @@ declare function oauthDeviceAuthorization(options?: OAuthDeviceAuthorizationOpti
         grant_type: z.ZodLiteral<"urn:ietf:params:oauth:grant-type:device_code">;
         device_code: z.ZodString;
         client_id: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       error: z.ZodObject<{
         error: z.ZodEnum<{
           invalid_request: "invalid_request";
@@ -406,7 +331,7 @@ declare function oauthDeviceAuthorization(options?: OAuthDeviceAuthorizationOpti
           invalid_grant: "invalid_grant";
         }>;
         error_description: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         noStore: boolean;
         openapi: {
@@ -462,13 +387,13 @@ declare function oauthDeviceAuthorization(options?: OAuthDeviceAuthorizationOpti
       method: "GET";
       query: z.ZodObject<{
         user_code: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       error: z.ZodObject<{
         error: z.ZodEnum<{
           invalid_request: "invalid_request";
         }>;
         error_description: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         openapi: {
           description: string;
@@ -511,13 +436,13 @@ declare function oauthDeviceAuthorization(options?: OAuthDeviceAuthorizationOpti
       client_id?: string | undefined;
       scope?: string | undefined;
     } & Partial<{
-      resource: string | string[];
+      resource: string | string[] | undefined;
     }>>;
     deviceApprove: import("better-call").StrictEndpoint<"/device/approve", {
       method: "POST";
       body: z.ZodObject<{
         userCode: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       error: z.ZodObject<{
         error: z.ZodEnum<{
           invalid_request: "invalid_request";
@@ -527,7 +452,7 @@ declare function oauthDeviceAuthorization(options?: OAuthDeviceAuthorizationOpti
           unauthorized: "unauthorized";
         }>;
         error_description: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       requireHeaders: true;
       metadata: {
         openapi: {
@@ -558,7 +483,7 @@ declare function oauthDeviceAuthorization(options?: OAuthDeviceAuthorizationOpti
       method: "POST";
       body: z.ZodObject<{
         userCode: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       error: z.ZodObject<{
         error: z.ZodEnum<{
           invalid_request: "invalid_request";
@@ -567,7 +492,7 @@ declare function oauthDeviceAuthorization(options?: OAuthDeviceAuthorizationOpti
           unauthorized: "unauthorized";
         }>;
         error_description: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       requireHeaders: true;
       metadata: {
         openapi: {
@@ -601,26 +526,26 @@ declare function oauthDeviceAuthorization(options?: OAuthDeviceAuthorizationOpti
     max: number;
   }[];
   $ERROR_CODES: {
-    USER_NOT_FOUND: import("better-auth/*").RawError<"USER_NOT_FOUND">;
-    FAILED_TO_CREATE_SESSION: import("better-auth/*").RawError<"FAILED_TO_CREATE_SESSION">;
-    INVALID_DEVICE_CODE: import("better-auth/*").RawError<"INVALID_DEVICE_CODE">;
-    EXPIRED_DEVICE_CODE: import("better-auth/*").RawError<"EXPIRED_DEVICE_CODE">;
-    EXPIRED_USER_CODE: import("better-auth/*").RawError<"EXPIRED_USER_CODE">;
-    AUTHORIZATION_PENDING: import("better-auth/*").RawError<"AUTHORIZATION_PENDING">;
-    ACCESS_DENIED: import("better-auth/*").RawError<"ACCESS_DENIED">;
-    INVALID_USER_CODE: import("better-auth/*").RawError<"INVALID_USER_CODE">;
-    DEVICE_CODE_ALREADY_PROCESSED: import("better-auth/*").RawError<"DEVICE_CODE_ALREADY_PROCESSED">;
-    DEVICE_CODE_NOT_CLAIMED: import("better-auth/*").RawError<"DEVICE_CODE_NOT_CLAIMED">;
-    POLLING_TOO_FREQUENTLY: import("better-auth/*").RawError<"POLLING_TOO_FREQUENTLY">;
-    INVALID_DEVICE_CODE_STATUS: import("better-auth/*").RawError<"INVALID_DEVICE_CODE_STATUS">;
-    AUTHENTICATION_REQUIRED: import("better-auth/*").RawError<"AUTHENTICATION_REQUIRED">;
+    USER_NOT_FOUND: import("better-auth").RawError<"USER_NOT_FOUND">;
+    FAILED_TO_CREATE_SESSION: import("better-auth").RawError<"FAILED_TO_CREATE_SESSION">;
+    INVALID_DEVICE_CODE: import("better-auth").RawError<"INVALID_DEVICE_CODE">;
+    EXPIRED_DEVICE_CODE: import("better-auth").RawError<"EXPIRED_DEVICE_CODE">;
+    EXPIRED_USER_CODE: import("better-auth").RawError<"EXPIRED_USER_CODE">;
+    AUTHORIZATION_PENDING: import("better-auth").RawError<"AUTHORIZATION_PENDING">;
+    ACCESS_DENIED: import("better-auth").RawError<"ACCESS_DENIED">;
+    INVALID_USER_CODE: import("better-auth").RawError<"INVALID_USER_CODE">;
+    DEVICE_CODE_ALREADY_PROCESSED: import("better-auth").RawError<"DEVICE_CODE_ALREADY_PROCESSED">;
+    DEVICE_CODE_NOT_CLAIMED: import("better-auth").RawError<"DEVICE_CODE_NOT_CLAIMED">;
+    POLLING_TOO_FREQUENTLY: import("better-auth").RawError<"POLLING_TOO_FREQUENTLY">;
+    INVALID_DEVICE_CODE_STATUS: import("better-auth").RawError<"INVALID_DEVICE_CODE_STATUS">;
+    AUTHENTICATION_REQUIRED: import("better-auth").RawError<"AUTHENTICATION_REQUIRED">;
   };
   options: {
     grant: DeviceAuthorizationGrant<Readonly<{
-      [k: string]: z.z.core.$ZodType<unknown, unknown, z.z.core.$ZodTypeInternals<unknown, unknown>>;
+      [k: string]: z.core.$ZodType<unknown, unknown, z.core.$ZodTypeInternals<unknown, unknown>>;
     }>, Record<string, unknown>> | undefined;
-    expiresIn: import("better-auth/plugins/device-authorization").TimeString;
-    interval: import("better-auth/plugins/device-authorization").TimeString;
+    expiresIn: import("better-auth/plugins").TimeString;
+    interval: import("better-auth/plugins").TimeString;
     deviceCodeLength: number;
     userCodeLength: number;
     generateDeviceCode?: (() => string | Promise<string>) | undefined;
@@ -708,7 +633,7 @@ declare const getOAuthProviderState: () => Promise<{
   query?: string;
   signedQueryIssuedAt?: Date;
   postLoginClearedForSession?: string;
-}>;
+} | null>;
 /**
  * oAuth 2.1 provider plugin for Better Auth.
  *
@@ -718,14 +643,14 @@ declare const getOAuthProviderState: () => Promise<{
  */
 declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
   id: "oauth-provider";
-  version: any;
+  version: string;
   options: NoInfer<O>;
-  onRequest: (request: Request, ctx: import("@better-auth/core").AuthContext) => Promise<{
+  onRequest: (request: Request, ctx: import("better-auth").AuthContext) => Promise<{
     response: Response;
   } | {
     request: Request;
   } | void>;
-  init: (ctx: import("@better-auth/core").AuthContext) => Promise<{
+  init: (ctx: import("better-auth").AuthContext) => Promise<{
     options: {
       databaseHooks: {
         session: {
@@ -737,9 +662,9 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
               userId: string;
               expiresAt: Date;
               token: string;
-              ipAddress?: string;
-              userAgent?: string;
-            } & Record<string, unknown>, hookCtx: GenericEndpointContext): Promise<void>;
+              ipAddress?: string | null | undefined;
+              userAgent?: string | null | undefined;
+            } & Record<string, unknown>, hookCtx: GenericEndpointContext | null): Promise<void>;
             after(session: {
               id: string;
               createdAt: Date;
@@ -747,9 +672,9 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
               userId: string;
               expiresAt: Date;
               token: string;
-              ipAddress?: string;
-              userAgent?: string;
-            } & Record<string, unknown>, hookCtx: GenericEndpointContext): Promise<void>;
+              ipAddress?: string | null | undefined;
+              userAgent?: string | null | undefined;
+            } & Record<string, unknown>, hookCtx: GenericEndpointContext | null): Promise<void>;
           };
         };
       };
@@ -757,12 +682,12 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
   }>;
   hooks: {
     before: {
-      matcher(ctx: import("@better-auth/core").HookEndpointContext): any;
+      matcher(ctx: import("better-auth").HookEndpointContext): any;
       handler: import("better-call").Middleware<import("better-call").MiddlewareOptions, (inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<void>>;
     }[];
     after: {
-      matcher(ctx: import("@better-auth/core").HookEndpointContext): boolean;
-      handler: import("better-call").Middleware<import("better-call").MiddlewareOptions, (inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<OAuthRedirectResult>>;
+      matcher(ctx: import("better-auth").HookEndpointContext): boolean;
+      handler: import("better-call").Middleware<import("better-call").MiddlewareOptions, (inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<OAuthRedirectResult | undefined>>;
     }[];
   };
   endpoints: {
@@ -792,47 +717,47 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         SERVER_ONLY: true;
       };
     }, {
-      jwks_uri?: string;
       userinfo_endpoint: string;
-      acr_values_supported?: string[];
+      acr_values_supported?: string[] | undefined;
       subject_types_supported: ("public" | "pairwise")[];
       claims_supported: string[];
-      claims_parameter_supported?: boolean;
+      claims_parameter_supported?: boolean | undefined;
       end_session_endpoint: string;
-      request_parameter_supported?: boolean;
-      request_uri_parameter_supported?: boolean;
+      request_parameter_supported?: boolean | undefined;
+      request_uri_parameter_supported?: boolean | undefined;
       prompt_values_supported: Prompt[];
       issuer: string;
       authorization_endpoint: string;
       token_endpoint: string;
-      registration_endpoint?: string;
-      scopes_supported?: string[];
+      jwks_uri?: string | undefined;
+      registration_endpoint?: string | undefined;
+      scopes_supported?: string[] | undefined;
       response_types_supported: "code"[];
       response_modes_supported: "query"[];
       grant_types_supported: GrantType[];
-      token_endpoint_auth_methods_supported?: TokenEndpointAuthMethod[];
-      token_endpoint_auth_signing_alg_values_supported?: import("better-auth/*").PrivateKeyJwtSigningAlgorithm[];
-      service_documentation?: string;
-      ui_locales_supported?: string[];
-      op_policy_uri?: string;
-      op_tos_uri?: string;
-      revocation_endpoint?: string;
-      revocation_endpoint_auth_methods_supported?: TokenEndpointAuthMethod[];
-      revocation_endpoint_auth_signing_alg_values_supported?: import("better-auth/*").PrivateKeyJwtSigningAlgorithm[];
-      introspection_endpoint?: string;
-      introspection_endpoint_auth_methods_supported?: TokenEndpointAuthMethod[];
-      introspection_endpoint_auth_signing_alg_values_supported?: import("better-auth/*").PrivateKeyJwtSigningAlgorithm[];
+      token_endpoint_auth_methods_supported?: TokenEndpointAuthMethod[] | undefined;
+      token_endpoint_auth_signing_alg_values_supported?: import("better-auth").PrivateKeyJwtSigningAlgorithm[] | undefined;
+      service_documentation?: string | undefined;
+      ui_locales_supported?: string[] | undefined;
+      op_policy_uri?: string | undefined;
+      op_tos_uri?: string | undefined;
+      revocation_endpoint?: string | undefined;
+      revocation_endpoint_auth_methods_supported?: TokenEndpointAuthMethod[] | undefined;
+      revocation_endpoint_auth_signing_alg_values_supported?: import("better-auth").PrivateKeyJwtSigningAlgorithm[] | undefined;
+      introspection_endpoint?: string | undefined;
+      introspection_endpoint_auth_methods_supported?: TokenEndpointAuthMethod[] | undefined;
+      introspection_endpoint_auth_signing_alg_values_supported?: import("better-auth").PrivateKeyJwtSigningAlgorithm[] | undefined;
       code_challenge_methods_supported: "S256"[];
-      authorization_response_iss_parameter_supported?: boolean;
-      client_id_metadata_document_supported?: boolean;
-      backchannel_logout_supported?: boolean;
-      backchannel_logout_session_supported?: boolean;
-      dpop_signing_alg_values_supported?: import("better-auth/plugins").JWSAlgorithms[];
+      authorization_response_iss_parameter_supported?: boolean | undefined;
+      client_id_metadata_document_supported?: boolean | undefined;
+      backchannel_logout_supported?: boolean | undefined;
+      backchannel_logout_session_supported?: boolean | undefined;
+      dpop_signing_alg_values_supported?: import("better-auth/plugins").JWSAlgorithms[] | undefined;
       id_token_signing_alg_values_supported: import("better-auth/plugins").JWSAlgorithms[] | ["HS256"];
     }>;
-    oauth2Authorize: import("better-call").StrictEndpoint<string, {
+    oauth2Authorize: import("better-call").StrictEndpoint<"/oauth2/authorize", {
       method: ("GET" | "POST")[];
-      body: z.ZodObject<{}, z.z.core.$loose>;
+      body: z.ZodObject<{}, z.core.$loose>;
       redirectOnError: OAuthRedirectOnError<GenericEndpointContext, OAuthRedirectResult>;
       metadata: {
         allowedMediaTypes: string[];
@@ -942,7 +867,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         scope: z.ZodOptional<z.ZodString>;
         claims: z.ZodOptional<z.ZodUnion<readonly [z.ZodString, z.ZodRecord<z.ZodString, z.ZodUnknown>]>>;
         oauth_query: z.ZodOptional<z.ZodString>;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       use: import("better-call").Middleware<import("better-call").MiddlewareOptions, (inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<{
         session: {
           session: Record<string, any> & {
@@ -1007,7 +932,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         created: z.ZodOptional<z.ZodBoolean>;
         postLogin: z.ZodOptional<z.ZodBoolean>;
         oauth_query: z.ZodOptional<z.ZodString>;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       use: import("better-call").Middleware<import("better-call").MiddlewareOptions, (inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<{
         session: {
           session: Record<string, any> & {
@@ -1077,7 +1002,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         refresh_token: z.ZodOptional<z.ZodString>;
         resource: z.ZodOptional<z.ZodUnion<readonly [z.ZodString, z.ZodArray<z.ZodString>]>>;
         scope: z.ZodOptional<z.ZodString>;
-      }, z.z.core.$loose>;
+      }, z.core.$loose>;
       errorCodesByField: {
         grant_type: {
           missing: "invalid_request";
@@ -1244,7 +1169,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         client_assertion_type: z.ZodOptional<z.ZodString>;
         token: z.ZodString;
         token_type_hint: z.ZodOptional<z.ZodString>;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         noStore: boolean;
         allowedMediaTypes: string[];
@@ -1377,7 +1302,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         client_assertion_type: z.ZodOptional<z.ZodString>;
         token: z.ZodString;
         token_type_hint: z.ZodOptional<z.ZodString>;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         allowedMediaTypes: string[];
         openapi: {
@@ -1448,19 +1373,19 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
           };
         };
       };
-    }, any>;
+    }, null | undefined>;
     oauth2UserInfo: import("better-call").StrictEndpoint<"/oauth2/userinfo", {
       method: ("GET" | "POST")[];
       body: z.ZodOptional<z.ZodObject<{
         access_token: z.ZodOptional<z.ZodString>;
-      }, z.z.core.$loose>>;
+      }, z.core.$loose>>;
       metadata: {
         noStore: boolean;
         allowedMediaTypes: string[];
         openapi: {
           description: string;
           security: ({
-            bearerAuth: any[];
+            bearerAuth: never[];
             OAuth2?: undefined;
           } | {
             OAuth2: string[];
@@ -1576,13 +1501,13 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         client_id: z.ZodOptional<z.ZodString>;
         post_logout_redirect_uri: z.ZodOptional<z.ZodURL>;
         state: z.ZodOptional<z.ZodString>;
-      }, z.z.core.$strip>>;
+      }, z.core.$strip>>;
       query: z.ZodOptional<z.ZodObject<{
         id_token_hint: z.ZodOptional<z.ZodString>;
         client_id: z.ZodOptional<z.ZodString>;
         post_logout_redirect_uri: z.ZodOptional<z.ZodURL>;
         state: z.ZodOptional<z.ZodString>;
-      }, z.z.core.$strip>>;
+      }, z.core.$strip>>;
       metadata: {
         noStore: boolean;
         allowedMediaTypes: string[];
@@ -1622,18 +1547,18 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
           };
         };
       };
-    }, Response | OAuthRedirectResult>;
+    }, Response | OAuthRedirectResult | null>;
     oauth2EndSessionConfirmation: import("better-call").StrictEndpoint<"/oauth2/end-session/confirm", {
       method: "POST";
       body: z.ZodObject<{
         action: z.ZodLiteral<"confirm">;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         noStore: boolean;
         allowedMediaTypes: string[];
         scope: "http";
       };
-    }, Response | OAuthRedirectResult>;
+    }, Response | OAuthRedirectResult | null>;
     registerOAuthClient: import("better-call").StrictEndpoint<"/oauth2/register", {
       method: "POST";
       body: z.ZodObject<{
@@ -1654,7 +1579,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         token_endpoint_auth_method: z.ZodOptional<z.ZodString>;
         jwks: z.ZodOptional<z.ZodObject<{
           keys: z.ZodArray<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
-        }, z.z.core.$strip>>;
+        }, z.core.$strip>>;
         jwks_uri: z.ZodOptional<z.ZodString>;
         grant_types: z.ZodOptional<z.ZodArray<z.ZodString>>;
         response_types: z.ZodOptional<z.ZodArray<z.ZodEnum<{
@@ -1671,7 +1596,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         dpop_bound_access_tokens: z.ZodOptional<z.ZodBoolean>;
         resources: z.ZodOptional<z.ZodArray<z.ZodString>>;
         skip_consent: z.ZodOptional<z.ZodNever>;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       errorCodesByField: {
         redirect_uris: "invalid_redirect_uri";
         post_logout_redirect_uris: "invalid_redirect_uri";
@@ -1850,7 +1775,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         }>>;
         jwks: z.ZodOptional<z.ZodObject<{
           keys: z.ZodArray<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
-        }, z.z.core.$strip>>;
+        }, z.core.$strip>>;
         jwks_uri: z.ZodOptional<z.ZodString>;
         grant_types: z.ZodOptional<z.ZodArray<z.ZodString>>;
         client_credentials_scopes: z.ZodOptional<z.ZodArray<z.ZodString>>;
@@ -1868,7 +1793,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
           pairwise: "pairwise";
         }>>;
         metadata: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         noStore: boolean;
         SERVER_ONLY: true;
@@ -2064,14 +1989,14 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         }>>;
         jwks: z.ZodOptional<z.ZodObject<{
           keys: z.ZodArray<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
-        }, z.z.core.$strip>>;
+        }, z.core.$strip>>;
         jwks_uri: z.ZodOptional<z.ZodString>;
         grant_types: z.ZodOptional<z.ZodArray<z.ZodString>>;
         response_types: z.ZodOptional<z.ZodArray<z.ZodEnum<{
           code: "code";
         }>>>;
         dpop_bound_access_tokens: z.ZodOptional<z.ZodBoolean>;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         noStore: boolean;
         openapi: {
@@ -2234,7 +2159,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
       }>>[];
       query: z.ZodObject<{
         client_id: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         openapi: {
           description: string;
@@ -2268,7 +2193,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
       }>>[];
       query: z.ZodObject<{
         client_id: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         openapi: {
           description: string;
@@ -2281,7 +2206,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
       body: z.ZodObject<{
         client_id: z.ZodString;
         oauth_query: z.ZodOptional<z.ZodString>;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         openapi: {
           description: string;
@@ -2318,7 +2243,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
           description: string;
         };
       };
-    }, OAuthClient[]>;
+    }, OAuthClient[] | null>;
     adminUpdateOAuthClient: import("better-call").StrictEndpoint<"/admin/oauth2/update-client", {
       method: "PATCH";
       body: z.ZodObject<{
@@ -2353,8 +2278,8 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
           disabled: z.ZodOptional<z.ZodBoolean>;
           dpop_bound_access_tokens: z.ZodOptional<z.ZodBoolean>;
           metadata: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
-        }, z.z.core.$strip>;
-      }, z.z.core.$strip>;
+        }, z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         SERVER_ONLY: true;
         openapi: {
@@ -2412,8 +2337,8 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
           response_types: z.ZodOptional<z.ZodArray<z.ZodEnum<{
             code: "code";
           }>>>;
-        }, z.z.core.$strip>;
-      }, z.z.core.$strip>;
+        }, z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         openapi: {
           description: string;
@@ -2447,7 +2372,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
       }>>[];
       body: z.ZodObject<{
         client_id: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         noStore: boolean;
         openapi: {
@@ -2462,8 +2387,8 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         client_assertion_type: z.ZodString;
         jwks: z.ZodObject<{
           keys: z.ZodArray<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
-        }, z.z.core.$strip>;
-      }, z.z.core.$strip>;
+        }, z.core.$strip>;
+      }, z.core.$strip>;
       errorCodesByField: {
         client_assertion: "invalid_client";
         client_assertion_type: "invalid_client";
@@ -2506,7 +2431,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
       }>>[];
       body: z.ZodObject<{
         client_id: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         openapi: {
           description: string;
@@ -2517,7 +2442,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
       method: "GET";
       query: z.ZodObject<{
         id: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       use: import("better-call").Middleware<import("better-call").MiddlewareOptions, (inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<{
         session: {
           session: Record<string, any> & {
@@ -2607,14 +2532,14 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         id: z.ZodString;
         update: z.ZodObject<{
           scopes: z.ZodArray<z.ZodString>;
-        }, z.z.core.$strip>;
-      }, z.z.core.$strip>;
+        }, z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         openapi: {
           description: string;
         };
       };
-    }, OAuthConsent<Scope[]>>;
+    }, OAuthConsent<Scope[]> | null>;
     deleteOAuthConsent: import("better-call").StrictEndpoint<"/oauth2/delete-consent", {
       method: "POST";
       use: import("better-call").Middleware<import("better-call").MiddlewareOptions, (inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<{
@@ -2642,7 +2567,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
       }>>[];
       body: z.ZodObject<{
         id: z.ZodString;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         openapi: {
           description: string;
@@ -2669,7 +2594,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         dpopBoundAccessTokensRequired: z.ZodOptional<z.ZodBoolean>;
         disabled: z.ZodOptional<z.ZodBoolean>;
         metadata: z.ZodOptional<z.ZodNullable<z.ZodRecord<z.ZodString, z.ZodUnknown>>>;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         SERVER_ONLY: true;
       };
@@ -2706,7 +2631,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         dpopBoundAccessTokensRequired: z.ZodOptional<z.ZodBoolean>;
         disabled: z.ZodOptional<z.ZodBoolean>;
         metadata: z.ZodOptional<z.ZodNullable<z.ZodRecord<z.ZodString, z.ZodUnknown>>>;
-      }, z.z.core.$strip>;
+      }, z.core.$strip>;
       metadata: {
         SERVER_ONLY: true;
       };
@@ -2777,7 +2702,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         clientCredentialsScopes: {
           type: "string[]";
           required: false;
-          defaultValue: any[];
+          defaultValue: never[];
         };
         userId: {
           type: "string";

@@ -1,4 +1,4 @@
-import { d as getJwtPlugin, f as getOAuthProviderPlugin, n as createResourceServerChallenge } from "./resource-challenge-D3SlKd-L.mjs";
+import { d as getJwtPlugin, f as getOAuthProviderPlugin, n as createResourceServerChallenge } from "./resource-challenge-YMvBe7Ph.mjs";
 import { t as PACKAGE_VERSION } from "./version-Cc5AzH4t.mjs";
 import { APIError } from "better-call";
 import { BetterAuthError } from "@better-auth/core/error";

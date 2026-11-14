@@ -46,7 +46,7 @@ declare const schema: {
       clientCredentialsScopes: {
         type: "string[]";
         required: false;
-        defaultValue: any[];
+        defaultValue: never[];
       };
       userId: {
         type: "string";
@@ -580,7 +580,7 @@ declare const clientRegistrationRequestSchema: z.ZodObject<{
   token_endpoint_auth_method: z.ZodOptional<z.ZodString>;
   jwks: z.ZodOptional<z.ZodObject<{
     keys: z.ZodArray<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
-  }, z.z.core.$strip>>;
+  }, z.core.$strip>>;
   jwks_uri: z.ZodOptional<z.ZodString>;
   grant_types: z.ZodOptional<z.ZodArray<z.ZodString>>;
   response_types: z.ZodOptional<z.ZodArray<z.ZodEnum<{
@@ -597,7 +597,7 @@ declare const clientRegistrationRequestSchema: z.ZodObject<{
   dpop_bound_access_tokens: z.ZodOptional<z.ZodBoolean>;
   resources: z.ZodOptional<z.ZodArray<z.ZodString>>;
   skip_consent: z.ZodOptional<z.ZodNever>;
-}, z.z.core.$strip>;
+}, z.core.$strip>;
 /**
  * Complete OAuth client metadata document schema shared by registration and
  * verified client-discovery integrations.
@@ -609,13 +609,14 @@ declare const clientRegistrationRequestSchema: z.ZodObject<{
  * unknown extension without unsafe casts or ad-hoc allowlists.
  */
 declare const oauthClientMetadataSchema: z.ZodObject<{
-  contacts: z.ZodOptional<z.ZodArray<z.ZodString>>;
   jwks: z.ZodOptional<z.ZodObject<{
     keys: z.ZodArray<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
-  }, z.z.core.$strip>>;
+  }, z.core.$strip>>;
+  jwks_uri: z.ZodOptional<z.ZodString>;
+  contacts: z.ZodOptional<z.ZodArray<z.ZodString>>;
   resources: z.ZodOptional<z.ZodArray<z.ZodString>>;
-  scope: z.ZodOptional<z.ZodString>;
   redirect_uris: z.ZodOptional<z.ZodArray<z.ZodURL>>;
+  scope: z.ZodOptional<z.ZodString>;
   client_name: z.ZodOptional<z.ZodString>;
   client_uri: z.ZodOptional<z.ZodString>;
   logo_uri: z.ZodOptional<z.ZodString>;
@@ -628,7 +629,6 @@ declare const oauthClientMetadataSchema: z.ZodObject<{
   backchannel_logout_uri: z.ZodOptional<z.ZodURL>;
   backchannel_logout_session_required: z.ZodOptional<z.ZodBoolean>;
   token_endpoint_auth_method: z.ZodOptional<z.ZodString>;
-  jwks_uri: z.ZodOptional<z.ZodString>;
   grant_types: z.ZodOptional<z.ZodArray<z.ZodString>>;
   response_types: z.ZodOptional<z.ZodArray<z.ZodEnum<{
     code: "code";
@@ -646,7 +646,7 @@ declare const oauthClientMetadataSchema: z.ZodObject<{
   client_secret: z.ZodOptional<z.ZodString>;
   client_secret_expires_at: z.ZodOptional<z.ZodNumber>;
   client_id_issued_at: z.ZodOptional<z.ZodNumber>;
-}, z.z.core.$loose>;
+}, z.core.$loose>;
 type OAuthClientMetadata = z.infer<typeof oauthClientMetadataSchema>;
 /**
  * Client metadata as submitted in an RFC 7591 §2 registration request, inferred

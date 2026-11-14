@@ -236,7 +236,7 @@ async function resolveClientRegistrationResources(
 	return resources;
 }
 
-function validateClientRedirectUri(
+export function validateClientRedirectUri(
 	redirectUri: string,
 	applicationType: "web" | "native",
 	opts: OAuthOptions<Scope[]>,

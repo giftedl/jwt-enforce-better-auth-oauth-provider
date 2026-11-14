@@ -742,7 +742,7 @@ async function extractClientCredentials(ctx, opts, expectedAudience) {
 				confirmation: result.confirmation
 			};
 		}
-		const { verifyClientAssertion: verify } = await import("./authorize-BX7Ffmfu.mjs").then((n) => n.o);
+		const { verifyClientAssertion: verify } = await import("./authorize-CgQ0dSRQ.mjs").then((n) => n.o);
 		return {
 			kind: "pre_verified",
 			method: "private_key_jwt",

@@ -1,7 +1,7 @@
-import { p as oauthDeviceAuthorization, r as oauthProvider } from "./oauth-BgjeLl2b.mjs";
+import { p as oauthDeviceAuthorization, r as oauthProvider } from "./oauth-YC9PddOH.mjs";
 export declare const oauthProviderClient: () => {
   id: "oauth-provider-client";
-  version: any;
+  version: string;
   fetchPlugins: {
     id: string;
     name: string;
