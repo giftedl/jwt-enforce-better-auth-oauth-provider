@@ -1,4 +1,4 @@
-import { c as ResourceServerMetadata } from "./oauth-GVSFxpjR.mjs";
+import { c as ResourceServerMetadata } from "./oauth-CJcuK2yV.mjs";
 import { JWTPayload, JWTVerifyOptions } from "jose";
 import { ResourceRequestInput, VerifyAccessTokenRequestOptions } from "better-auth/oauth2";
 import { BetterAuthOptions } from "better-auth/types";

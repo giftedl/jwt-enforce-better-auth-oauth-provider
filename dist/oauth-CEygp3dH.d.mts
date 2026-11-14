@@ -1,5 +1,5 @@
-import { B as Prompt, E as OAuthConsent, F as OAuthResource, H as Scope, O as OAuthExtensionGrantHandlerInput, R as OAuthTokenResponse, a as GrantType, j as OAuthOptions, k as OAuthMetadataExtensionInput, l as TokenEndpointAuthMethod, n as AuthServerMetadata, o as OAuthClient, u as TokenType, w as OAuthClientRegistrationResponse, y as OAuthClientAdministrativeResponse } from "./oauth-GVSFxpjR.mjs";
-import { t as ClientJwks } from "./client-jwks-DbPSP8uQ.mjs";
+import { B as Prompt, E as OAuthConsent, F as OAuthResource, H as Scope, O as OAuthExtensionGrantHandlerInput, R as OAuthTokenResponse, a as GrantType, j as OAuthOptions, k as OAuthMetadataExtensionInput, l as TokenEndpointAuthMethod, n as AuthServerMetadata, o as OAuthClient, u as TokenType, w as OAuthClientRegistrationResponse, y as OAuthClientAdministrativeResponse } from "./oauth-CJcuK2yV.mjs";
+import { t as ClientJwks } from "./client-jwks-CSi19bpy.mjs";
 import "better-call";
 import * as z from "zod";
 import { DeviceAuthorizationGrant, DeviceAuthorizationPluginOptions } from "better-auth/plugins/device-authorization";

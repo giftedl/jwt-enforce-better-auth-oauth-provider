@@ -1,4 +1,4 @@
-import { o as OAuthClient } from "./oauth-GVSFxpjR.mjs";
+import { o as OAuthClient } from "./oauth-CJcuK2yV.mjs";
 import { JSONWebKeySet } from "jose";
 /** A client's inline public JWK Set, as registration and key rotation accept it. */
 type ClientJwks = NonNullable<OAuthClient["jwks"]>;
