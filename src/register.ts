@@ -269,7 +269,7 @@ function validateClientRedirectUri(
 
 	if (applicationType === "web") {
 		if (isHttp && isInsecureRedirectUriAllowed(opts, url)) return;
-		if (isHttps && !isRedirectLoopback) {
+		if (!isHttps && !isRedirectLoopback) {
 			invalidRedirectUri(
 				`web clients require https redirect URIs on non-loopback hosts: ${redirectUri}`,
 			);
