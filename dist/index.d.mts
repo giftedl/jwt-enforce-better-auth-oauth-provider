@@ -1,0 +1,218 @@
+import { a as OAuthEndpointErrorResult, c as OAuthFieldErrorCode, d as DEVICE_CODE_GRANT_TYPE, f as OAuthDeviceAuthorizationOptions, i as getIssuer, l as OAuthFieldErrorCodeMap, n as getOAuthProviderState, o as OAuthEndpointRedirectContext, p as oauthDeviceAuthorization, r as oauthProvider, s as OAuthErrorCode, t as DEFAULT_OAUTH_SCOPES, u as OAuthRedirectOnError } from "./oauth-BgjeLl2b.mjs";
+import { A as OAuthOpaqueAccessToken, B as Prompt, C as OAuthClientAuthenticationStrategy, D as OAuthExtensionGrantHandler, E as OAuthConsent, F as OAuthResource, G as VerificationValue, H as Scope, I as OAuthResourceInput, J as ResourceUriSchema, K as ClientRegistrationRequest, L as OAuthTokenIssueParams, M as OAuthProviderApi, N as OAuthProviderExtension, O as OAuthExtensionGrantHandlerInput, P as OAuthRefreshToken, R as OAuthTokenResponse, S as OAuthClientAuthenticationResult, T as OAuthClientResource, U as StoreTokenType, V as SchemaClient, W as StoredAuthorizationQuery, Y as oauthClientMetadataSchema, _ as OAuthAuthorizationQuery, a as GrantType, b as OAuthClientAuthenticationInput, c as ResourceServerMetadata, d as ActiveAccessTokenPayload, f as AuthorizePrompt, g as OAuthAuthenticatedClient, h as InitialAccessTokenAuthorization, i as Confirmation, j as OAuthOptions, k as OAuthMetadataExtensionInput, l as TokenEndpointAuthMethod, m as ClientMetadataResourceFetch, n as AuthServerMetadata, o as OAuthClient, p as ClientDiscovery, q as OAuthClientMetadata, r as BearerMethodsSupported, s as OIDCMetadata, t as AuthMethod, u as TokenType, v as OAuthClaimExtensionInput, w as OAuthClientRegistrationResponse, x as OAuthClientAuthenticationRequest, y as OAuthClientAdministrativeResponse, z as OAuthUserInfoExtensionInput } from "./oauth-tw0Gr5R5.mjs";
+import "./client-jwks-zt-C6luo.mjs";
+import { APIError } from "better-call";
+import { ResourceRequestInput } from "better-auth/oauth2";
+import { JWSAlgorithms, JwtOptions } from "better-auth/plugins";
+import { AuthContext, GenericEndpointContext } from "@better-auth/core";
+/**
+ * Registers an {@link OAuthProviderExtension} with the OAuth Provider plugin
+ * from a companion plugin's `init()` hook. An extension can add token grants,
+ * assertion-based client authentication methods, additive discovery metadata,
+ * access-token / ID-token / UserInfo claims, and client-id discovery, without
+ * forking provider core.
+ *
+ * Call this once, at `init()` time. It is idempotent in the same `extension`
+ * object, so re-running a plugin's `init()` (for example when one plugin factory
+ * result is shared across two `betterAuth()` instances) does not register it
+ * twice. It throws if the oauth-provider plugin is not installed, if a grant
+ * type or assertion type is not an absolute URI, if a client authentication
+ * method reuses a built-in name, or if the extension registers a grant type,
+ * auth method, assertion type, or client discovery identifier that another
+ * extension already registered (contributions must be disjoint).
+ *
+ * @example
+ * ```ts
+ * init(ctx) {
+ *   extendOAuthProvider(ctx, {
+ *     grants: { "urn:example:grant": async ({ provider }) => provider.issueTokens(...) },
+ *   });
+ * }
+ * ```
+ */
+export declare function extendOAuthProvider(ctx: AuthContext, extension: OAuthProviderExtension): void;
+export declare function authServerMetadata(ctx: GenericEndpointContext, opts?: JwtOptions, overrides?: {
+  scopes_supported?: AuthServerMetadata["scopes_supported"];
+  dynamic_client_registration_supported?: boolean;
+  public_client_supported?: boolean;
+  grant_types_supported?: GrantType[];
+  token_endpoint_auth_methods_supported?: TokenEndpointAuthMethod[];
+  endpoint_auth_methods_supported?: TokenEndpointAuthMethod[];
+  jwt_disabled?: boolean;
+  dpop_signing_alg_values_supported?: JWSAlgorithms[];
+}): AuthServerMetadata;
+export declare function oauthAuthorizationServerMetadata(ctx: GenericEndpointContext, opts: OAuthOptions<Scope[]>): AuthServerMetadata;
+export declare function oidcServerMetadata(ctx: GenericEndpointContext, opts: OAuthOptions<Scope[]> & {
+  claims?: string[];
+}): {
+  jwks_uri?: string;
+  userinfo_endpoint: string;
+  acr_values_supported?: string[];
+  subject_types_supported: ("public" | "pairwise")[];
+  claims_supported: string[];
+  claims_parameter_supported?: boolean;
+  end_session_endpoint: string;
+  request_parameter_supported?: boolean;
+  request_uri_parameter_supported?: boolean;
+  prompt_values_supported: Prompt[];
+  issuer: string;
+  authorization_endpoint: string;
+  token_endpoint: string;
+  registration_endpoint?: string;
+  scopes_supported?: string[];
+  response_types_supported: "code"[];
+  response_modes_supported: "query"[];
+  grant_types_supported: GrantType[];
+  token_endpoint_auth_methods_supported?: TokenEndpointAuthMethod[];
+  token_endpoint_auth_signing_alg_values_supported?: import("@better-auth/core/oauth2").PrivateKeyJwtSigningAlgorithm[];
+  service_documentation?: string;
+  ui_locales_supported?: string[];
+  op_policy_uri?: string;
+  op_tos_uri?: string;
+  revocation_endpoint?: string;
+  revocation_endpoint_auth_methods_supported?: TokenEndpointAuthMethod[];
+  revocation_endpoint_auth_signing_alg_values_supported?: import("@better-auth/core/oauth2").PrivateKeyJwtSigningAlgorithm[];
+  introspection_endpoint?: string;
+  introspection_endpoint_auth_methods_supported?: TokenEndpointAuthMethod[];
+  introspection_endpoint_auth_signing_alg_values_supported?: import("@better-auth/core/oauth2").PrivateKeyJwtSigningAlgorithm[];
+  code_challenge_methods_supported: "S256"[];
+  authorization_response_iss_parameter_supported?: boolean;
+  client_id_metadata_document_supported?: boolean;
+  backchannel_logout_supported?: boolean;
+  backchannel_logout_session_supported?: boolean;
+  dpop_signing_alg_values_supported?: JWSAlgorithms[];
+  id_token_signing_alg_values_supported: JWSAlgorithms[] | ["HS256"];
+};
+export declare function metadataResponse(body: unknown, extraHeaders?: HeadersInit): Response;
+/**
+ * Provides an exportable `/.well-known/oauth-authorization-server`.
+ *
+ * Useful when basePath prevents the endpoint from being located at the root
+ * and must be provided manually.
+ *
+ * @external
+ */
+export declare const oauthProviderAuthServerMetadata: <Auth extends {
+  api: {
+    getOAuthServerConfig: (...args: any) => any;
+  };
+}>(auth: Auth, opts?: {
+  headers?: HeadersInit;
+}) => (request: Request) => Promise<Response>;
+/**
+ * Provides an exportable `/.well-known/openid-configuration`.
+ *
+ * Useful when basePath prevents the endpoint from being located at the root
+ * and must be provided manually.
+ *
+ * @external
+ */
+export declare const oauthProviderOpenIdConfigMetadata: <Auth extends {
+  api: {
+    getOpenIdConfig: (...args: any) => any;
+  };
+}>(auth: Auth, opts?: {
+  headers?: HeadersInit;
+}) => (request: Request) => Promise<Response>;
+/**
+ * Create an OAuth resource-server challenge for a failed access-token request.
+ *
+ * Missing/invalid bearer credentials are reported with RFC 6750 plus the RFC
+ * 9728 `resource_metadata` pointer. A 401 whose body has
+ * `error: "invalid_token"` means a presented token failed, so its challenge
+ * also carries that code and an `error_description` (RFC 6750 §3.1); any
+ * other 401 is treated as a request without credentials and carries neither.
+ * Insufficient-scope failures (built with
+ * `createInsufficientScopeError`) are reported with RFC 6750 §3.1's
+ * `insufficient_scope` challenge on a 403 naming the scopes the token lacks, so
+ * clients can step up their authorization. DPoP-bound-token failures are
+ * reported with RFC 9449's `DPoP` challenge so clients know which proof
+ * algorithms to use. Pass the failed `request` so that any 401 or
+ * insufficient-scope 403 on a request that presented its token with the
+ * `DPoP` scheme, such as an expired or revoked token, is also answered with a
+ * `DPoP` challenge (RFC 9449 §7.2), and a 401 on one with an unsupported
+ * scheme, or none, with a `Bearer` challenge (RFC 6750 §3.1). Without it,
+ * only DPoP-specific errors get one. Non-URL resources (for example a `urn:`
+ * or a client id) resolve their metadata URL through
+ * `resourceMetadataMappings`.
+ *
+ * An `error_description` is fitted into RFC 6750 §3's character set rather
+ * than rejected: `"` becomes `'`, other excluded characters become spaces, and
+ * an empty result is omitted. The returned error's body keeps the original
+ * `error` and `error_description`. Invalid scope tokens in `challengeScopes`
+ * still throw, since they are server configuration.
+ *
+ * Every other error returns `undefined`, including a plain `FORBIDDEN`: a
+ * permission denial that re-authorizing cannot fix must not be answered with a
+ * challenge that sends the user through consent for scopes they already hold.
+ *
+ * @external
+ */
+export declare function createResourceServerChallenge(error: unknown, resource: string | string[], opts?: {
+  /** Maps non-URL (urn, client) resources to their resource_metadata URL. */
+  resourceMetadataMappings?: Record<string, string>;
+  /** DPoP JWS algorithms to advertise in RFC 9449 challenges. */
+  dpopSigningAlgorithms?: readonly string[];
+  /**
+   * Scopes to advertise in RFC 6750 bearer challenges,
+   * hinting what an unauthenticated client should request. An
+   * insufficient-scope failure advertises the scopes it names instead.
+   */
+  challengeScopes?: readonly string[];
+  /**
+   * The request that failed, or its `Authorization` header as
+   * `{ authorizationHeader }`. A 401 or insufficient-scope 403 on a
+   * request that used the `DPoP` scheme is answered with a `DPoP`
+   * challenge rather than `Bearer`, and a 401 with an unsupported scheme,
+   * or none, always with `Bearer`.
+   */
+  request?: Request | Pick<ResourceRequestInput, "authorizationHeader">;
+}): APIError | undefined;
+/**
+ * Returns the OAuth Provider's server-side capability surface bound to `ctx`.
+ * The token endpoint passes one (pre-bound to the dispatched grant) to each
+ * extension grant handler; a companion plugin's own endpoint calls this directly
+ * with its grant type. `grantType` is bound here, not per issuance, so a handler
+ * cannot mislabel the grant; omit it for capabilities that do not issue tokens
+ * (`getClient`, `validateAccessToken`, `requireActiveAccessToken`), and
+ * `issueTokens` then throws.
+ */
+export declare function getOAuthProviderApi(ctx: GenericEndpointContext, opts: OAuthOptions<Scope[]>, grantType?: GrantType): OAuthProviderApi;
+/**
+ * Verify the signature and expiration of an OAuth query issued by this provider.
+ * Use the provider's current auth secret on the server before displaying a
+ * consent page. A valid signature does not replace client or session checks.
+ */
+export declare function verifyOAuthQueryParams(oauth_query: string, secret: string): Promise<boolean>;
+/**
+ * Enforces the assertion-hygiene claims every client-assertion authentication
+ * method must check, independent of how the signature is verified or where the
+ * verification keys come from:
+ * - `aud` MUST include `expectedAudience` (RFC 7523 §3 rule 3),
+ * - `exp` MUST be present, unexpired, and at most `assertionMaxLifetime`
+ *   seconds away (RFC 7523 §3 rule 4),
+ * - `iat`, when present, MUST be within `assertionMaxLifetime`,
+ * - `jti` MUST be present and single-use; this consumes a replay tombstone keyed
+ *   by `` `${namespace}:${jti}` ``, inserted under the adapter's primary key so a
+ *   replay across workers fails atomically.
+ *
+ * A custom {@link OAuthClientAuthenticationStrategy} should call this after
+ * verifying the assertion signature, so an extension method inherits the same
+ * replay, lifetime, and audience guarantees as the built-in `private_key_jwt`
+ * path, which calls it too.
+ *
+ * @param params.namespace Scopes the replay tombstone to the method and client,
+ *   e.g. `` `${method}:${clientId}` ``, so the same `jti` can recur across
+ *   distinct methods or clients but never within one.
+ */
+export declare function consumeClientAssertion(ctx: GenericEndpointContext, opts: OAuthOptions<Scope[]>, params: {
+  namespace: string;
+  payload: {
+    aud?: unknown;
+    exp?: unknown;
+    iat?: unknown;
+    jti?: unknown;
+  };
+  expectedAudience: string;
+}): Promise<void>;
+export { type ActiveAccessTokenPayload, type AuthMethod, type AuthServerMetadata, type AuthorizePrompt, type BearerMethodsSupported, type ClientDiscovery, type ClientMetadataResourceFetch, type ClientRegistrationRequest, type Confirmation, DEFAULT_OAUTH_SCOPES, DEVICE_CODE_GRANT_TYPE, type GrantType, type InitialAccessTokenAuthorization, type OAuthAuthenticatedClient, type OAuthAuthorizationQuery, type OAuthClaimExtensionInput, type OAuthClient, type OAuthClientAdministrativeResponse, type OAuthClientAuthenticationInput, type OAuthClientAuthenticationRequest, type OAuthClientAuthenticationResult, type OAuthClientAuthenticationStrategy, type OAuthClientMetadata, type OAuthClientRegistrationResponse, type OAuthClientResource, type OAuthConsent, type OAuthDeviceAuthorizationOptions, type OAuthEndpointErrorResult, type OAuthEndpointRedirectContext, type OAuthErrorCode, type OAuthExtensionGrantHandler, type OAuthExtensionGrantHandlerInput, type OAuthFieldErrorCode, type OAuthFieldErrorCodeMap, type OAuthMetadataExtensionInput, type OAuthOpaqueAccessToken, type OAuthOptions, type OAuthProviderApi, type OAuthProviderExtension, type OAuthRedirectOnError, type OAuthRefreshToken, type OAuthResource, type OAuthResourceInput, type OAuthTokenIssueParams, type OAuthTokenResponse, type OAuthUserInfoExtensionInput, type OIDCMetadata, type Prompt, type ResourceServerMetadata, ResourceUriSchema, type SchemaClient, type Scope, type StoreTokenType, type StoredAuthorizationQuery, type TokenEndpointAuthMethod, type TokenType, type VerificationValue, getIssuer, getOAuthProviderState, oauthClientMetadataSchema, oauthDeviceAuthorization, oauthProvider };

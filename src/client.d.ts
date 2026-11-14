@@ -1,0 +1,28 @@
+import type { oauthDeviceAuthorization } from "./device-code";
+import type { oauthProvider } from "./oauth";
+export declare const oauthProviderClient: () => {
+    id: "oauth-provider-client";
+    version: any;
+    fetchPlugins: {
+        id: string;
+        name: string;
+        description: string;
+        hooks: {
+            onRequest<T extends Record<string, any>>(ctx: import("@better-fetch/fetch").RequestContext<T>): Promise<void>;
+        };
+    }[];
+    $InferServerPlugin: ReturnType<typeof oauthProvider>;
+};
+/** Client plugin for {@link oauthDeviceAuthorization}. */
+export declare const oauthDeviceAuthorizationClient: () => {
+    $InferServerPlugin: ReturnType<typeof oauthDeviceAuthorization>;
+    id: "device-authorization";
+    version: string;
+    pathMethods: {
+        "/device/code": "POST";
+        "/device/token": "POST";
+        "/device": "GET";
+        "/device/approve": "POST";
+        "/device/deny": "POST";
+    };
+};
