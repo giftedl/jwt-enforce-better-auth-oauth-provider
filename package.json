@@ -30,23 +30,47 @@
     "coverage": "vitest run --coverage --coverage.provider=istanbul"
   },
   "files": [
-    "src"
+    "dist"
   ],
-  "main": "./src/index.ts",
-  "module": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "default": "./src/index.ts",
-      "types": "./src/index.ts"
+      "dev-source": "./src/index.ts",
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
     },
     "./client": {
-      "default": "./src/client.ts",
-      "types": "./src/client.ts"
+      "dev-source": "./src/client.ts",
+      "types": "./dist/client.d.mts",
+      "default": "./dist/client.mjs"
     },
     "./resource-client": {
-      "default": "./src/client-resource.ts",
-      "types": "./src/client-resource.ts"
+      "dev-source": "./src/client-resource.ts",
+      "types": "./dist/client-resource.d.mts",
+      "default": "./dist/client-resource.mjs"
+    },
+    "./internal": {
+      "dev-source": "./src/internal.ts",
+      "types": "./dist/internal.d.mts",
+      "default": "./dist/internal.mjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.mts"
+      ],
+      "client": [
+        "./dist/client.d.mts"
+      ],
+      "resource-client": [
+        "./dist/client-resource.d.mts"
+      ],
+      "internal": [
+        "./dist/internal.d.mts"
+      ]
     }
   },
   "dependencies": {
