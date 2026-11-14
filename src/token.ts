@@ -1255,7 +1255,7 @@ async function createUserTokens(
 		clientAllowsGrant(client, "refresh_token") &&
 		(existingRefreshToken?.scopes?.includes("offline_access") ||
 			scopes.includes("offline_access"));
-	const isJwtAccessToken = audienceClaim && !opts.disableJwtPlugin;
+	const isJwtAccessToken = true;
 	const isIdToken = user && effectiveScopes.includes("openid");
 	const metadata = parseClientMetadata(client.metadata);
 	const additionalIdTokenClaims =
