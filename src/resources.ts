@@ -382,10 +382,10 @@ export async function resolveResourcePolicy(
 			resolved.push(row);
 			continue;
 		}
-		throw new APIError("BAD_REQUEST", {
-			error: "invalid_target",
-			error_description: `requested resource ${identifier} is not configured`,
-		});
+		// throw new APIError("BAD_REQUEST", {
+		// 	error: "invalid_target",
+		// 	error_description: `requested resource ${identifier} is not configured`,
+		// });
 	}
 
 	// Per-client resource linkage check.

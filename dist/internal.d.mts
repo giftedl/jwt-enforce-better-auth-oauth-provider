@@ -5,8 +5,8 @@
  * verified registration lifecycle. Application integrations should use the
  * public endpoints and plugin APIs instead.
  */
-import { n as PublicClientJwksValidationResult, r as validatePublicClientJwks } from "./client-jwks-CSi19bpy.mjs";
-import { H as Scope, V as SchemaClient, j as OAuthOptions, o as OAuthClient } from "./oauth-CJcuK2yV.mjs";
+import { n as PublicClientJwksValidationResult, r as validatePublicClientJwks } from "./client-jwks-C-nR6F97.mjs";
+import { H as Scope, V as SchemaClient, j as OAuthOptions, o as OAuthClient } from "./oauth-C0o0l9Ap.mjs";
 import { GenericEndpointContext } from "@better-auth/core";
 export declare function isForbiddenCimdClientMetadataField(field: string): boolean;
 interface OAuthClientRegistrationResult {
