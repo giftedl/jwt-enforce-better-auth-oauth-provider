@@ -1,5 +1,5 @@
-import { B as Prompt, E as OAuthConsent, F as OAuthResource, H as Scope, O as OAuthExtensionGrantHandlerInput, R as OAuthTokenResponse, a as GrantType, j as OAuthOptions, k as OAuthMetadataExtensionInput, l as TokenEndpointAuthMethod, n as AuthServerMetadata, o as OAuthClient, u as TokenType, w as OAuthClientRegistrationResponse, y as OAuthClientAdministrativeResponse } from "./oauth-C0o0l9Ap.mjs";
-import { t as ClientJwks } from "./client-jwks-C-nR6F97.mjs";
+import { B as Prompt, E as OAuthConsent, F as OAuthResource, H as Scope, O as OAuthExtensionGrantHandlerInput, R as OAuthTokenResponse, a as GrantType, j as OAuthOptions, k as OAuthMetadataExtensionInput, l as TokenEndpointAuthMethod, n as AuthServerMetadata, o as OAuthClient, u as TokenType, w as OAuthClientRegistrationResponse, y as OAuthClientAdministrativeResponse } from "./oauth-DPgImiDT.mjs";
+import { t as ClientJwks } from "./client-jwks-C-rOCI8N.mjs";
 import "better-call";
 import * as z from "zod";
 import { DeviceAuthorizationGrant, DeviceAuthorizationPluginOptions } from "better-auth/plugins/device-authorization";
@@ -207,12 +207,12 @@ declare function oauthDeviceAuthorization(options?: OAuthDeviceAuthorizationOpti
       }, z.core.$strip>;
       error: z.ZodObject<{
         error: z.ZodEnum<{
-          invalid_target: "invalid_target";
-          invalid_client: "invalid_client";
           invalid_request: "invalid_request";
+          invalid_client: "invalid_client";
           unauthorized_client: "unauthorized_client";
           invalid_scope: "invalid_scope";
           server_error: "server_error";
+          invalid_target: "invalid_target";
         }>;
         error_description: z.ZodString;
       }, z.core.$strip>;
@@ -756,7 +756,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
       id_token_signing_alg_values_supported: import("better-auth/plugins").JWSAlgorithms[] | ["HS256"];
     }>;
     oauth2Authorize: import("better-call").StrictEndpoint<"/oauth2/authorize", {
-      method: ("POST" | "GET")[];
+      method: ("GET" | "POST")[];
       body: z.ZodObject<{}, z.core.$loose>;
       redirectOnError: OAuthRedirectOnError<GenericEndpointContext, OAuthRedirectResult>;
       metadata: {
@@ -1375,7 +1375,7 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
       };
     }, null | undefined>;
     oauth2UserInfo: import("better-call").StrictEndpoint<"/oauth2/userinfo", {
-      method: ("POST" | "GET")[];
+      method: ("GET" | "POST")[];
       body: z.ZodOptional<z.ZodObject<{
         access_token: z.ZodOptional<z.ZodString>;
       }, z.core.$loose>>;
@@ -1493,9 +1493,11 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
       };
     }, {
       sub: unknown;
+      name: string | undefined;
+      picture: string | null | undefined;
     }>;
     oauth2EndSession: import("better-call").StrictEndpoint<"/oauth2/end-session", {
-      method: ("POST" | "GET")[];
+      method: ("GET" | "POST")[];
       body: z.ZodOptional<z.ZodObject<{
         id_token_hint: z.ZodOptional<z.ZodString>;
         client_id: z.ZodOptional<z.ZodString>;
@@ -2582,11 +2584,11 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         accessTokenTtl: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
         refreshTokenTtl: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
         signingAlgorithm: z.ZodOptional<z.ZodNullable<z.ZodEnum<{
-          EdDSA: "EdDSA";
+          RS256: "RS256";
+          PS256: "PS256";
           ES256: "ES256";
           ES512: "ES512";
-          PS256: "PS256";
-          RS256: "RS256";
+          EdDSA: "EdDSA";
         }>>>;
         signingKeyId: z.ZodOptional<z.ZodNullable<z.ZodString>>;
         allowedScopes: z.ZodOptional<z.ZodNullable<z.ZodArray<z.ZodString>>>;
@@ -2619,11 +2621,11 @@ declare const oauthProvider: <O extends OAuthOptions<Scope[]>>(options: O) => {
         accessTokenTtl: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
         refreshTokenTtl: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
         signingAlgorithm: z.ZodOptional<z.ZodNullable<z.ZodEnum<{
-          EdDSA: "EdDSA";
+          RS256: "RS256";
+          PS256: "PS256";
           ES256: "ES256";
           ES512: "ES512";
-          PS256: "PS256";
-          RS256: "RS256";
+          EdDSA: "EdDSA";
         }>>>;
         signingKeyId: z.ZodOptional<z.ZodNullable<z.ZodString>>;
         allowedScopes: z.ZodOptional<z.ZodNullable<z.ZodArray<z.ZodString>>>;

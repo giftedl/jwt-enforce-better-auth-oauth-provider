@@ -1,4 +1,4 @@
-import { A as storeClientSecret, B as collectExtensionUserInfoClaims, C as parseClientMetadata, D as resolveSessionAuthTime, E as removePromptFromQuery, F as validateClientScopes, G as getSupportedGrantTypes, H as getClientDiscoveries, I as verifyOAuthQueryParams, J as validateOAuthProviderExtensions, K as hasUserInfoClaimExtension, L as applyOAuthProviderMetadataExtensions, M as toAudienceClaim, N as toResourceList, O as resolveSubjectIdentifier, P as validateClientCredentials, R as collectExtensionAccessTokenClaims, S as parseBearerToken, T as removeMaxAgeFromQuery, U as getExtensionGrantHandler, W as getSupportedAuthMethods, _ as isRedirectUriTransportAllowed, a as decryptStoredClientSecret, c as findConsent, d as getJwtPlugin, g as isPKCERequired, h as isInvalidJwtError, i as clientAllowsGrant, j as storeToken, k as searchParamsToQuery, l as getClient, m as isInsecureRedirectUriAllowed, o as destructureCredentials, p as getStoredToken, q as isExtensionTokenEndpointAuthMethod, r as assertNotTrustedClient, s as extractClientCredentials, t as buildDpopChallengeValue, u as getConsentReferenceId, v as isSessionFreshForSignedQuery, w as parsePrompt, x as normalizeTimestampValue, y as mergeDiscoveryMetadata, z as collectExtensionIdTokenClaims } from "./resource-challenge-CY3vxkk5.mjs";
+import { A as storeClientSecret, B as collectExtensionUserInfoClaims, C as parseClientMetadata, D as resolveSessionAuthTime, E as removePromptFromQuery, F as validateClientScopes, G as getSupportedGrantTypes, H as getClientDiscoveries, I as verifyOAuthQueryParams, J as validateOAuthProviderExtensions, K as hasUserInfoClaimExtension, L as applyOAuthProviderMetadataExtensions, M as toAudienceClaim, N as toResourceList, O as resolveSubjectIdentifier, P as validateClientCredentials, R as collectExtensionAccessTokenClaims, S as parseBearerToken, T as removeMaxAgeFromQuery, U as getExtensionGrantHandler, W as getSupportedAuthMethods, _ as isRedirectUriTransportAllowed, a as decryptStoredClientSecret, c as findConsent, d as getJwtPlugin, g as isPKCERequired, h as isInvalidJwtError, i as clientAllowsGrant, j as storeToken, k as searchParamsToQuery, l as getClient, m as isInsecureRedirectUriAllowed, o as destructureCredentials, p as getStoredToken, q as isExtensionTokenEndpointAuthMethod, r as assertNotTrustedClient, s as extractClientCredentials, t as buildDpopChallengeValue, u as getConsentReferenceId, v as isSessionFreshForSignedQuery, w as parsePrompt, x as normalizeTimestampValue, y as mergeDiscoveryMetadata, z as collectExtensionIdTokenClaims } from "./resource-challenge-DRqZDpQk.mjs";
 import { a as postLoginClearedParam, i as getSignedQueryIssuedAt, o as setSignedOAuthQueryParameterNames, r as canonicalizeOAuthQueryParams, s as signedQueryIssuedAtParam, t as PACKAGE_VERSION } from "./version-Cc5AzH4t.mjs";
 import { isBrowserFetchRequest } from "@better-auth/core/utils/fetch-metadata";
 import { isLoopbackHost, isLoopbackIP, isPublicRoutableHost } from "@better-auth/core/utils/host";
@@ -1449,11 +1449,14 @@ async function userInfoEndpoint(ctx, opts) {
 		jwt,
 		requestedClaims
 	}) : {};
+	const userObj = await ctx.context.internalAdapter.findUserById(baseUserClaims.sub);
 	return {
 		...baseUserClaims,
 		...pickClaims(extensionUserClaims, baseUserClaims),
 		...pickClaims(additionalInfoUserClaims),
-		sub: baseUserClaims.sub
+		sub: baseUserClaims.sub,
+		name: userObj?.name,
+		picture: userObj?.image
 	};
 }
 // src/token.ts

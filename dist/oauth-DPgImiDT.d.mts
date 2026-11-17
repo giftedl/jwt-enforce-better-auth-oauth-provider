@@ -609,12 +609,12 @@ declare const clientRegistrationRequestSchema: z.ZodObject<{
  * unknown extension without unsafe casts or ad-hoc allowlists.
  */
 declare const oauthClientMetadataSchema: z.ZodObject<{
-  resources: z.ZodOptional<z.ZodArray<z.ZodString>>;
   scope: z.ZodOptional<z.ZodString>;
   contacts: z.ZodOptional<z.ZodArray<z.ZodString>>;
   jwks: z.ZodOptional<z.ZodObject<{
     keys: z.ZodArray<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
   }, z.core.$strip>>;
+  resources: z.ZodOptional<z.ZodArray<z.ZodString>>;
   jwks_uri: z.ZodOptional<z.ZodString>;
   redirect_uris: z.ZodOptional<z.ZodArray<z.ZodURL>>;
   client_name: z.ZodOptional<z.ZodString>;
