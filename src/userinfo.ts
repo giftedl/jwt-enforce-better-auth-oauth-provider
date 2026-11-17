@@ -296,10 +296,15 @@ export async function userInfoEndpoint(
 					requestedClaims,
 				})
 			: {};
+
+	const userObj = await ctx.context.internalAdapter.findUserById(baseUserClaims.sub as string);
+
 	return {
 		...baseUserClaims,
 		...pickClaims(extensionUserClaims, baseUserClaims),
 		...pickClaims(additionalInfoUserClaims),
 		sub: baseUserClaims.sub,
+		name: userObj?.name,
+		picture: userObj?.image
 	};
 }
